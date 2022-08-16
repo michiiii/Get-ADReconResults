@@ -1499,7 +1499,7 @@ foreach($hostname in $results.DomainControllers.Hostname)
 }
 
 Write-Host '#################################################' -BackgroundColor Black
-Write-Host '##                  Never signed in            ##' -BackgroundColor Black
+Write-Host '##                  Never logged in            ##' -BackgroundColor Black
 Write-Host '#################################################' -BackgroundColor Black
 Write-Host 'Checking for users that have never signed in' -ForegroundColor Black -BackgroundColor White
 # Never signed in
@@ -1529,8 +1529,8 @@ if($UsersNeverSignedInCount -gt 0)
     Write-Host "Users that never signed in (Disabled): $UsersNeverSignedInDisabledCount" -BackgroundColor Yellow -ForegroundColor Black
     Write-Host "Users that never signed in (Disabled) (%) : $UsersNeverSignedInDisabledPercentage%" -BackgroundColor Yellow -ForegroundColor Black
     
-    $FindingText_DE="Während unserer Tests haben wir festgestellt, dass sich in der Domäne $domainName, welche insgesamt $([string]::Format('{0:N0}',$TotalNumberOfUsers)) Benutzerkonten verwaltet, $([string]::Format('{0:N0}',$UsersNeverSignedInCount)) ($UsersNeverSignedInPercentage%) Benutzerkonten befinden, welche ihr Passwort bei der nächsten Anmeldung aktualisieren müssen. Davon ist aktuell $([string]::Format('{0:N0}',$UsersNeverSignedInEnabledCount)) ($UsersNeverSignedInEnabledPercentage%) Benutzerkonten als aktiv gelistet und $([string]::Format('{0:N0}',$UsersNeverSignedInDisabledCount)) ($UsersNeverSignedInDisabledPercentage%) deaktiviert."
-    $FindingText_EN="During our tests we noticed, that in the domain $domainName, which manages a total $([string]::Format('{0:N0}',$TotalNumberOfUsers)) user accounts, $([string]::Format('{0:N0}',$UsersNeverSignedInCount)) ($UsersNeverSignedInPercentage%) accounts have never logged on the the Active Directory. Of these, currently $([string]::Format('{0:N0}',$UsersNeverSignedInEnabledCount)) ($UsersNeverSignedInEnabledPercentage%) are marked as active and $([string]::Format('{0:N0}',$UsersNeverSignedInDisabledCount)) ($UsersNeverSignedInDisabledPercentage%) inactive."
+    $FindingText_DE="Während unserer Tests haben wir festgestellt, dass sich in der Domäne $domainName, welche insgesamt $([string]::Format('{0:N0}',$TotalNumberOfUsers)) Benutzerkonten verwaltet, $([string]::Format('{0:N0}',$UsersNeverSignedInCount)) ($UsersNeverSignedInPercentage%) Benutzerkonten befinden, welche sich noch nie am Active Directory angemeldet haben. Davon sind aktuell $([string]::Format('{0:N0}',$UsersNeverSignedInEnabledCount)) ($UsersNeverSignedInEnabledPercentage%) Benutzerkonten als aktiv gelistet und $([string]::Format('{0:N0}',$UsersNeverSignedInDisabledCount)) ($UsersNeverSignedInDisabledPercentage%) deaktiviert."
+    $FindingText_EN="During our tests we noticed, that in the domain $domainName, which manages a total $([string]::Format('{0:N0}',$TotalNumberOfUsers)) user accounts, $([string]::Format('{0:N0}',$UsersNeverSignedInCount)) ($UsersNeverSignedInPercentage%) accounts have never logged in the Active Directory. Of these, currently $([string]::Format('{0:N0}',$UsersNeverSignedInEnabledCount)) ($UsersNeverSignedInEnabledPercentage%) are marked as active and $([string]::Format('{0:N0}',$UsersNeverSignedInDisabledCount)) ($UsersNeverSignedInDisabledPercentage%) inactive."
 
     Write-Host $FindingText_DE -ForegroundColor Black -BackgroundColor White
     Write-Host $FindingText_EN -ForegroundColor Black -BackgroundColor White
