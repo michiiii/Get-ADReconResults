@@ -1654,7 +1654,7 @@ Write-Host 'Checking for users with password age < 365 days' -ForegroundColor Bl
 $UsersWithBigPasswordAge = $results.Users | Select-Object UserName, 
                                                 Enabled, 
                                                 @{Name="PasswordAge_days";Expression={[int] $_.'Password Age (days)'}} | 
-                                            Where-Object {($_.PasswordAge_days -gt 90)}
+                                            Where-Object {($_.PasswordAge_days -gt 365)}
 
 $UsersWithBigPasswordAgeCount = $($UsersWithBigPasswordAge.Count)
 
