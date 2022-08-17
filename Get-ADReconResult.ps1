@@ -1498,6 +1498,99 @@ foreach($hostname in $results.DomainControllers.Hostname)
   Write-Host "Get-SpoolStatus $hostname"
 }
 
+# Print Spooler
+## Check if the print spooler is enabled on the domain controllers
+## https://github.com/carlospolop/hacktricks/blob/master/windows/active-directory-methodology/printers-spooler-service-abuse.md
+# 
+Write-Host '######################################################' -BackgroundColor Black
+Write-Host '##          Domain Controller Logging Policy        ##' -BackgroundColor Black
+Write-Host '######################################################' -BackgroundColor Black
+Write-Host 'Analyzing the Domain Controller event logging policy' -ForegroundColor Black -BackgroundColor White
+Write-Host 'Benchmarking against CIS best practices:'
+
+##
+# 0 - Indicates that this setting is set to None.
+# 1 - Indicates that this setting is set to Success Audits Only.
+# 2 - Indicates that this setting is set to Failure Audits Only.
+# 3 - Indicates that this setting is set to Success and Failure Audits.
+# 4 - Indicates that this setting is set to None.
+##
+
+$auditValues = @{
+    0 = 'None'
+    1 = 'Success Audits Only'
+    2 = 'Failure Audits Only'
+    3 = 'Success and Failure Audits'
+    4 = 'None'
+}
+
+$auditSystemEvents=(Get-DomainPolicy -Policy DC).eventaudit.AuditSystemEvents -as [int]
+$auditLogonEvents=(Get-DomainPolicy -Policy DC).eventaudit.AuditLogonEvents -as [int]
+$auditObjectAccess=(Get-DomainPolicy -Policy DC).eventaudit.auditObjectAccess -as [int]
+$auditPrivilegeUse=(Get-DomainPolicy -Policy DC).eventaudit.auditPrivilegeUse -as [int]
+$auditProcessTracking=(Get-DomainPolicy -Policy DC).eventaudit.auditProcessTracking -as [int]
+$auditDSAccess=(Get-DomainPolicy -Policy DC).eventaudit.auditDSAccess -as [int]
+$auditAccountLogon=(Get-DomainPolicy -Policy DC).eventaudit.auditAccountLogon -as [int]
+
+if ($auditSystemEvents -ne 3)
+{
+	Write-Host "The audit policy for System Events is set to '$($auditValues.$auditSystemEvents)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else 
+{
+	Write-Host "The audit policy for System Events is set to '$($auditValues.$auditSystemEvents)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditLogonEvents -ne 3)
+{
+	Write-Host "The audit policy for Logon Events is set to '$($auditValues.$auditLogonEvents)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for Logon Events is set to '$($auditValues.$auditLogonEvents)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditObjectAccess -ne 3)
+{
+	Write-Host "The audit policy for Object Access is set to '$($auditValues.$auditObjectAccess)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for Object Access is set to '$($auditValues.$auditObjectAccess)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditPrivilegeUse -ne 3)
+{
+	Write-Host "The audit policy for Privilege Use is set to '$($auditValues.$auditPrivilegeUse)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for Privilege Use is set to '$($auditValues.$auditPrivilegeUse)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditProcessTracking -ne 3)
+{
+	Write-Host "The audit policy for Process Tracking is set to '$($auditValues.$auditProcessTracking)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for Process Tracking is set to '$($auditValues.$auditProcessTracking)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditDSAccess -ne 3)
+{
+	Write-Host "The audit policy for DS Access is set to '$($auditValues.$auditDSAccess)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for DS Access is set to '$($auditValues.$auditDSAccess)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+if ($auditAccountLogon -ne 3)
+{
+	Write-Host "The audit policy for Account Logon Events is set to '$($auditValues.$auditAccountLogon)'. It is recommended to audit '$($auditValues.3)'" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+	Write-Host "The audit policy for Account Logon Events is set to '$($auditValues.$auditAccountLogon)'. This is according to best practices" -ForegroundColor Black -BackgroundColor Green
+}
+
+
+
 Write-Host '#################################################' -BackgroundColor Black
 Write-Host '##                  Never logged in            ##' -BackgroundColor Black
 Write-Host '#################################################' -BackgroundColor Black
