@@ -2148,9 +2148,9 @@ $domainUserName= Read-Host -Prompt "Enter your user name (without Domain suffix)
 $domainUserPassword= Read-Host -Prompt "Enter the password for the user: "
 Invoke-LdapSignCheck -Command "-domain $($domainName) -user $($domainUserName) -password $($domainUserPassword)" -ErrorAction SilentlyContinue
 
-Write-Host '#########################################################' -BackgroundColor Black
-Write-Host '##           SeMachineAccountPrivilege                ##' -BackgroundColor Black
-Write-Host '#########################################################' -BackgroundColor Black
+Write-Host '###################################################################' -BackgroundColor Black
+Write-Host '##      SeMachineAccountPrivilege and ms-DS-MachineAccountQuota  ##' -BackgroundColor Black
+Write-Host '###################################################################' -BackgroundColor Black
 Write-Host 'Checking for groups that have the SeMachineAccounntPrivilege privilege' -ForegroundColor Black -BackgroundColor White
 $SeMachineAccountPrivilege=(Get-DomainPolicy -Policy DC).PrivilegeRights.SEMachineAccountPrivilege
 
@@ -2166,6 +2166,19 @@ ForEach($sid in $SeMachineAccountPrivilege)
     Write-Host "$($resource) has the SeMachineAccountPrivileges privileges" -ForegroundColor Black -BackgroundColor Yellow
   }
 }
+
+# Retriving ms-DS-MachineAccountQuota requires the RSAT Module
+Add-WindowsFeature -Name "RSAT-AD-PowerShell"
+$machineAccountQuota=(Get-ADObject ((Get-ADDomain)))."ms-ds-machineaccountquota"
+if($machineAccountQuota -ne 0){
+    Write-Host "ms-DS-MachineAccountQuota attribute is set to $($machineAccountQuota) privileges" -ForegroundColor Black -BackgroundColor Red
+}
+else
+{
+    Write-Host "ms-DS-MachineAccountQuota attribute is set to $($machineAccountQuota) privileges" -ForegroundColor Black -BackgroundColor Green
+}
+
+
 
 
 # Static creds for local computers
