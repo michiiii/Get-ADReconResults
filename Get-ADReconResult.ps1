@@ -1,7 +1,7 @@
-#requires -version 2
+﻿#requires -version 2
 <#
 .SYNOPSIS
-  Script to import all ADRecon results into one PowerShell Custom Object and return it to the user.
+  Script sto import all ADRecon results into one PowerShell Custom Object and return it to the user.
 .DESCRIPTION
   Does what it has to da
 .PARAMETER PathToCSVFolder
