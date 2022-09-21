@@ -1414,7 +1414,7 @@ elseif([int]$krbtgtAccount.'Password Age (days)' -lt 365){
   Write-Host "The krbtgt account password was last set on $(($krbtgtAccount.'Password LastSet'.ToString())) less than 365 days" -ForegroundColor Black -BackgroundColor Orange
 }
 else{
-  Write-Host "The krbtgt account password was last set $(($krbtgtAccount.'Password Age (days)').ToString())) days ago. Password should be rotated regulary" -ForegroundColor Black -BackgroundColor Red
+  Write-Host "The krbtgt account password was last set $(($krbtgtAccount.'Password Age (days)').ToString()) days ago. Password should be rotated regulary" -ForegroundColor Black -BackgroundColor Red
 }
 # Cleartext passwords in LDAP Attributes
 ## Check if the description attribute of user, computer or something else contains cleartext passwords
