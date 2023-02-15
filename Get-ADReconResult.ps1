@@ -2263,7 +2263,7 @@ ForEach($sid in $SeMachineAccountPrivilege)
 
 # Retriving ms-DS-MachineAccountQuota requires the RSAT Module
 Add-WindowsFeature -Name "RSAT-AD-PowerShell"
-$machineAccountQuota=(Get-ADObject ((Get-ADDomain)))."ms-ds-machineaccountquota"
+$machineAccountQuota=(Get-ADObject  -Identity ((Get-ADObject  -LDAPFilter "objectClass=domain").DistinguishedName) -Properties *)."ms-DS-MachineAccountQuota"
 if($machineAccountQuota -ne 0){
     Write-Host "ms-DS-MachineAccountQuota attribute is set to $($machineAccountQuota) privileges" -ForegroundColor Black -BackgroundColor Red
 }
