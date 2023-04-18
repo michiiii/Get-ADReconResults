@@ -2128,6 +2128,20 @@ else
     Write-Host "No computers with unsupported Operating Systems" -ForegroundColor Black -BackgroundColor Green
 }
 
+
+
+Write-Host '#########################################################' -BackgroundColor Black
+Write-Host '##                    DCSync Users                     ##' -BackgroundColor Black
+Write-Host '#########################################################' -BackgroundColor Black
+Write-Host 'Checking for DCSync Users' -ForegroundColor Black -BackgroundColor White
+$dcsyncUsers = ((Get-ObjectAcl -DistinguishedName "dc=vonlauffundbolz,dc=local" -ResolveGUIDs | ?{($_.ObjectType -match 'replication-get') -or ($_.ActiveDirectoryRights -match 'GenericAll') -or ($_.ActiveDirectoryRights -match 'WriteDacl')}).securityidentifier).value
+
+ForEach($sid in $dcsyncUsers)
+{
+  $resource=(Convert-SidToName $sid)
+    Write-Host "The $($resource) has DCSync privileges" -ForegroundColor Black -BackgroundColor Red
+}
+
 Write-Host '#########################################################' -BackgroundColor Black
 Write-Host '##           Use of Build-In Administrator              ##' -BackgroundColor Black
 Write-Host '#########################################################' -BackgroundColor Black
