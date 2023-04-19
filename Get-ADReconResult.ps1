@@ -2121,7 +2121,7 @@ Write-Host '#########################################################' -Backgrou
 Write-Host '##                    DCSync Users                     ##' -BackgroundColor Black
 Write-Host '#########################################################' -BackgroundColor Black
 Write-Host 'Checking for DCSync Users' -ForegroundColor Black -BackgroundColor White
-$dcsyncUsers = ((Get-ObjectAcl -DistinguishedName "dc=vonlauffundbolz,dc=local" -ResolveGUIDs | ?{($_.ObjectType -match 'replication-get') -or ($_.ActiveDirectoryRights -match 'GenericAll') -or ($_.ActiveDirectoryRights -match 'WriteDacl')}).securityidentifier).value
+$dcsyncUsers = ((Get-ObjectAcl -DistinguishedName $((Get-DomainObject -FindOne).distinguishedname) -ResolveGUIDs | ?{($_.ObjectType -match 'replication-get') -or ($_.ActiveDirectoryRights -match 'GenericAll') -or ($_.ActiveDirectoryRights -match 'WriteDacl')}).securityidentifier).value
 
 ForEach($sid in $dcsyncUsers)
 {
