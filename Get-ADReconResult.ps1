@@ -36,7 +36,7 @@ Import-Module .\Microsoft.ActiveDirectory.Management.dll
 iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1")
 iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-LdapSignCheck.ps1")
 iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/NotMedic/NetNTLMtoSilverTicket/master/Get-SpoolStatus.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/kfosaaen/Get-LAPSPasswords/master/Get-LAPSPasswords.ps1")
+iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/leoloobeek/LAPSToolkit/master/LAPSToolkit.ps1")
 iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/Check-SMBSigning/master/Check-SMBSigning.ps1")
 iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/SmbScanner/master/Check-SMBv1.ps1")
 
@@ -1026,17 +1026,6 @@ Function Get-ADReconResults{
       $GPOsResults = Import-Csv -Path $GPOsCSVPath
     }
 
-    # Check if LAPS.csv file exists
-    # If not, return empty array
-    # If so, import results into array
-    # Return array
-    $LAPsCSVPath = Join-Path -Path $sPathToCSVFolder -ChildPath "LAPS.csv"
-    if(!(Test-Path -Path $LAPsCSVPath)){
-      $LAPsResults = @()
-    } else{
-      $LAPsResults = Import-Csv -Path $LAPsCSVPath
-    }
-
     # Check if OUs.csv file exists
     # If not, return empty array
     # If so, import results into array
@@ -1110,7 +1099,6 @@ Function Get-ADReconResults{
                               GPOs = $GPOsResults
                               Groups = $GroupsResults
                               GroupMembers = $GroupMembersResults
-                              LAPS = $LAPsResults
                               OUs = $OUsResults
                               Sites = $SitesResults
                               Subnets = $SubnetsResults
@@ -1197,7 +1185,6 @@ $TotalNumberOfGroups = $results.Groups.Count
 $TotalNumberOfTrusts = $results.Trusts.Count
 $TotalNumberOfDomainControllers = $results.DomainControllers.Count
 $TotalNumberOfDomain = $results.DomainControllers.Count
-$TotalNumberOfLAPS = $results.LAPS.Count
 $TotalNumberOfGPOs = $results.GPOs.Count
 $TotalNumberOfBitLockerRecoveryKeys = $results.BitLockerRecoveryKeys.Count
 $TotalNumberOfComputerSPNs = $results.ComputerSPNs.Count
@@ -2296,13 +2283,15 @@ Write-Host '##              LAPS            ##' -BackgroundColor Black
 Write-Host '##################################' -BackgroundColor Black
 Write-Host 'Checking for LAPS implementation' -ForegroundColor Black -BackgroundColor White
 
-$LAPSComputersCount = (Get-LAPSPasswords | Where-Object {$_.Store -eq 1}).count
-$NonLAPSComputersCount = ((Get-Netcomputer).Count)-$LAPSComputersCount
+$LAPSComputers = Get-LAPSComputers
+$LAPSComputersCount = ($LAPSComputers).count
+$ComputersAD=$results.Computers
+$NonLAPSComputersCount = (($ComputersAD).Count)-$LAPSComputersCount
 
-$ComputerCountEnabled= $(($results.Computers | Where-Object {$_.Enabled -eq $true}).count).ToString()
-$ComputerCountDisabled= $(($results.Computers | Where-Object {$_.Enabled -eq $false}).count).ToString()
+$ComputerCountEnabled= $(($ComputersAD | Where-Object {$_.Enabled -eq $true}).count).ToString()
+$ComputerCountDisabled= $(($ComputersAD | Where-Object {$_.Enabled -eq $false}).count).ToString()
 
-Write-Host "Total number of computers in Active Directory: $TotalNumberOfComputers"
+Write-Host "Total number of computers in Active Directory: $(($ComputersAD).Count)"
 Write-Host "Number of enabled computer accounts: $ComputerCountEnabled"
 Write-Host "Number of disabled computer accounts: $ComputerCountDisabled"
 Write-Host "Number of computers with LAPS: $LAPSComputersCount"
@@ -2322,7 +2311,12 @@ elseif ($LAPSPercentage -lt 65){
   Write-Host "LAPS is implemented on $LAPSPercentage % of the computers in the $domainName domain" -ForegroundColor Black -BackgroundColor Red
 }
 
-Get-LAPSPasswords | Where-Object {$_.Store -eq 1}
+
+Write-Host '##################################' -BackgroundColor Black
+Write-Host '##     LAPS Passwords           ##' -BackgroundColor Black
+Write-Host '##################################' -BackgroundColor Black
+Write-Host 'Checking for Readable LAPS passwords' -ForegroundColor Black -BackgroundColor White
+$LAPSComputers | Where-Object {$_.Password}
 
 Write-Host '#########################################' -BackgroundColor Black
 Write-Host '##              SMB-Signing            ##' -BackgroundColor Black
