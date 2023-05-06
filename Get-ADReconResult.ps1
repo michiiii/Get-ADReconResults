@@ -1788,6 +1788,7 @@ Write-Host '##               Admin Count                ##' -BackgroundColor Bla
 Write-Host '##############################################' -BackgroundColor Black
 Write-Host 'Checking for users with AdminCount set...' -ForegroundColor Black -BackgroundColor White
 # User Accounts with Admin Count
+## Cleaning script: https://gist.github.com/webash/b34c5a422288827ff4e53318e34c6923
 ## Check if there are accounts that have an admin count set
 $UsersWithAdminCount = $results.Users | Select-Object UserName, Enabled, AdminCount |
                                         Where-Object {$_.AdminCount -eq 1}
