@@ -1739,9 +1739,9 @@ else{
 
 
 Write-Host '#######################################################' -BackgroundColor Black
-Write-Host '##               Password Age < 365 days             ##' -BackgroundColor Black
+Write-Host '##               Password Age > 365 days             ##' -BackgroundColor Black
 Write-Host '#######################################################' -BackgroundColor Black
-Write-Host 'Checking for users with password age < 365 days' -ForegroundColor Black -BackgroundColor White
+Write-Host 'Checking for users with password age > 365 days' -ForegroundColor Black -BackgroundColor White
 # User Accounts with password age < 365 days
 ## Check if there are accounts that have a password age > 365 days
 $UsersWithBigPasswordAge = $results.Users | Select-Object UserName, 
