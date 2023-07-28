@@ -1638,11 +1638,6 @@ else{
   Write-Host "There are no users that have never signed in" -ForegroundColor Black -BackgroundColor Green
 }
 
-
-# SeMachineAccountPrivilege
-## Check if users are able to add computers to the domain
-
-
 Write-Host '#################################################' -BackgroundColor Black
 Write-Host '##          Password change next login         ##' -BackgroundColor Black
 Write-Host '#################################################' -BackgroundColor Black
@@ -2249,17 +2244,18 @@ Write-Host '##      SeMachineAccountPrivilege and ms-DS-MachineAccountQuota  ##'
 Write-Host '###################################################################' -BackgroundColor Black
 Write-Host 'Checking for groups that have the SeMachineAccounntPrivilege privilege' -ForegroundColor Black -BackgroundColor White
 $SeMachineAccountPrivilege=(Get-DomainPolicy -Policy DC).PrivilegeRights.SEMachineAccountPrivilege
+$MAQ=(Get-DomainObject) | Select-Object ms-ds-machineaccountquota | select -First 1
 
 ForEach($sid in $SeMachineAccountPrivilege)
 {
   $resource=(Convert-SidToName $sid.Substring(1))
   if($resource -eq "Authenticated Users")
   {
-    Write-Host "The $($resource) group has the SeMachineAccountPrivileges privileges" -ForegroundColor Black -BackgroundColor Red
+    Write-Host "The $($resource) group has the SeMachineAccountPrivileges privileges with MAQ of $MAQ" -ForegroundColor Black -BackgroundColor Red
   }
   else
   {
-    Write-Host "The $($resource) group has the SeMachineAccountPrivileges privileges" -ForegroundColor Black -BackgroundColor Yellow
+    Write-Host "The $($resource) group has the SeMachineAccountPrivileges privileges with MAQ of $MAQ" -ForegroundColor Black -BackgroundColor Yellow
   }
 }
 
